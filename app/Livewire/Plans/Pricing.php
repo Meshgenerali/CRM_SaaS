@@ -17,7 +17,7 @@ class Pricing extends Component
     public function selectPlan(Plan $plan) {
         
         $this->selectedPlan = $plan;
-        dd($this->selectedPlan);
+        $this->dispatch('selected-plan', $plan); 
     }
     public function render()
     {

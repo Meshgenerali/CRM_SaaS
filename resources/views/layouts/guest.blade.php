@@ -43,6 +43,8 @@
             </div>
         </footer>
 
+        @livewire('business.register')
+
         @livewireScripts
     </body>
 </html>
