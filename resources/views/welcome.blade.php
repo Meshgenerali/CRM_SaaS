@@ -31,6 +31,7 @@
 </section>
 
 
+  @livewire('plans.pricing  ')
 
 </div>
 
