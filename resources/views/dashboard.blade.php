@@ -25,6 +25,8 @@
                 <p class="text-gray-200">test4</p>
                 @endcan
 
+                @livewire('business.invite')
+
             </div>
         </div>
     </div>
