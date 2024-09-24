@@ -8,7 +8,23 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
-                <x-welcome />
+                
+                @can('test')
+                <p class="text-gray-200">test</p>
+                @endcan
+
+                @can('test2')
+                <p class="text-gray-200">test2</p>
+                @endcan
+
+                @can('test3')
+                <p class="text-gray-200">test3</p>
+                @endcan
+
+                @can('test4')
+                <p class="text-gray-200">test4</p>
+                @endcan
+
             </div>
         </div>
     </div>

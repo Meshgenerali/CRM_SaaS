@@ -72,4 +72,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Role::class);
     }
+
+    public function permissions() {
+        //dd($this->roles->map->permissions->flatten()->pluck('name')->unique());
+        return $this->roles->map->permissions->flatten()->pluck('name')->unique();
+    }
 }
