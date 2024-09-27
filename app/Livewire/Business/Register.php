@@ -8,11 +8,15 @@ use App\Models\User;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Honeypot\Http\Livewire\Concerns\UsesSpamProtection;
+use Spatie\Honeypot\Http\Livewire\Concerns\HoneypotData;
 
 use Carbon\Carbon;
 
 class Register extends Component
 {
+    use UsesSpamProtection;
+
     public $showForm = false;
     public $planSelected;
     public $plans;
@@ -45,8 +49,11 @@ class Register extends Component
         'password' => 'required|min:8|same:passwordConfirmation',
     ];
 
+    public HoneypotData $extraFields;
+    
     public function mount()
     {
+        $this->extraFields = new HoneypotData();
         $this->plans = Plan::all();
     }
 
@@ -109,6 +116,8 @@ class Register extends Component
     public function submitRegistration()
     {
         $this->validate();
+
+        $this->protectAgainstSpam();
 
         // Create the business
 

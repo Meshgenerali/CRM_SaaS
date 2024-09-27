@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Jetstream\Jetstream;
+use Spatie\Honeypot\Events\SpamDetectedEvent;
+use Spatie\Honeypot\Exceptions\SpamException;
+use Spatie\Honeypot\ProtectAgainstSpam;
+use Spatie\Honeypot\SpamProtection;
 
 class CreateNewUser implements CreatesNewUsers
 {
@@ -26,10 +30,22 @@ class CreateNewUser implements CreatesNewUsers
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
         ])->validate();
 
+        $this->spamCheck();
+
         return User::create([
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
         ]);
+    }
+
+    public function spamCheck() {
+        try {
+            app(SpamProtection::class)->check(request()->all());
+        } catch (SpamException) {
+            event(new SpamDetectedEvent(request()));
+            abort(403, 'Spam detected');
+        }
+            
     }
 }
