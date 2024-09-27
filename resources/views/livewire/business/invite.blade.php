@@ -15,10 +15,6 @@
             @error('email') <span class="text-red-500">{{ $message }}</span> @enderror
         </div>
 
-
-    </x-slot>
-
-    <x-slot name="footer">
         <x-secondary-button wire:click="cancel" wire:loading.attr="disabled">
             Cancel
         </x-secondary-button>
@@ -26,7 +22,19 @@
         <x-danger-button class="ml-2" wire:click="sendInvite" wire:loading.attr="disabled">
             Send Invite
         </x-danger-button>
+
+
     </x-slot>
+
+    {{-- <x-slot name="footer">
+        <x-secondary-button wire:click="cancel" wire:loading.attr="disabled">
+            Cancel
+        </x-secondary-button>
+
+        <x-danger-button class="ml-2" wire:click="sendInvite" wire:loading.attr="disabled">
+            Send Invite
+        </x-danger-button>
+    </x-slot> --}}
 
 </x-dialog-modal>
 </div>
