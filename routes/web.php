@@ -16,10 +16,21 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 
-    Route::get('leads', [LeadController::class, 'index'])->name('index');
+
 });
 
 Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
+
+Route::controller(LeadController::class)->group(function () {
+    Route::get('leads', 'index')->name('leads.index');
+    Route::get('leads/create', 'create')->name('leads.create');
+    Route::post('leads/store', 'store')->name('leads.store');
+    Route::post('leads/{lead}/show', 'show')->name('leads.show');
+    Route::get('leads/{lead}/edit', 'edit')->name('leads.edit');
+    Route::delete('leads/{lead}/destroy', 'destroy')->name('leads.destroy');
+    Route::put('leads/{lead}/update', 'update')->name('leads.update');
+
+});
 
