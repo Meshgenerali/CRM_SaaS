@@ -4,11 +4,10 @@ namespace App\Livewire\Business;
 use Livewire\Component;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\InviteUser;
-use Jantinnerezo\LivewireAlert\LivewireAlert;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class Invite extends Component
 {
-    use LivewireAlert;
 
     public $inviteModal = false;
     public $email;
@@ -28,11 +27,13 @@ class Invite extends Component
 
         Mail::to($this->email)->send(new InviteUser());
 
-        return $this->inviteModal = false;
+        $this->inviteModal = false;
 
-        $this->alert('question', 'Invite Send successfully to user!',[
-            'showConfirmButton' => true
-        ]);
+        session()->flash('success', 'Invite Sent Successfully to User!');
+        return redirect()->route('dashboard');
+
+       // $this->alert('question', 'Invite Send successfully to user!');
+      // Alert::success('Success Title', 'Success Message');
     }
 
     public function render()

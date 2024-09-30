@@ -12,6 +12,7 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.0",
+        "realrashid/sweet-alert": "^7.2",
         "spatie/laravel-honeypot": "^4.5"
     },
     "require-dev": {

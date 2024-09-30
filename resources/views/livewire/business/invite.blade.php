@@ -1,5 +1,6 @@
 
 <div>
+
     <x-button wire:click="invite">Invite User</x-button>
 
 <x-dialog-modal wire:model="inviteModal">
