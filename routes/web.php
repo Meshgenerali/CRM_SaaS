@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LeadController;
+use App\Http\Middleware\SelectBusiness;
 
 Route::get('/', function () {
     return view('welcome');
@@ -14,7 +15,7 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
-    })->name('dashboard');
+    })->name('dashboard')->middleware(SelectBusiness::class);
 
 
 });

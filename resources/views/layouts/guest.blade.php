@@ -44,6 +44,7 @@
         </footer>
 
         @livewire('business.register')
+        @livewire('business.select')
 
         @livewireScripts
     </body>

@@ -35,6 +35,11 @@
                 @endcan
 
                 @livewire('business.invite')
+                
+                @if (auth()->check() && auth()->user()->businesses->isNotEmpty())
+                @livewire('business.select', ['showButton' => true])
+                {{auth()->user()->roles->toJson()}}
+                @endif
 
             </div>
         </div>
