@@ -8,11 +8,18 @@ use App\Models\User;
 use Livewire\Component;
 use Livewire\Attributes\On;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Honeypot\Http\Livewire\Concerns\UsesSpamProtection;
+use Spatie\Honeypot\Http\Livewire\Concerns\HoneypotData;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 use Carbon\Carbon;
 
+
 class Register extends Component
 {
+    use UsesSpamProtection;
+
     public $showForm = false;
     public $planSelected;
     public $plans;
@@ -45,9 +52,16 @@ class Register extends Component
         'password' => 'required|min:8|same:passwordConfirmation',
     ];
 
-    public function mount()
+    public HoneypotData $extraFields;
+    
+    public function mount(Request $request)
     {
+        $this->extraFields = new HoneypotData();
         $this->plans = Plan::all();
+
+        if($request->register=='true') {
+            $this->showForm = true;
+        }
     }
 
     #[On('selected-plan')]
@@ -96,6 +110,14 @@ class Register extends Component
                     'businessCity' => 'required',
                     'businessIndustry' => 'required',
                 ]);
+            
+                if(Auth::check()) {
+                    $business = $this->createBusiness();
+                    //$business->users()->attach($user->id);
+                    Auth::user()->businesses()->attach($business->id);
+                    $this->redirectRoute('dashboard');
+                }
+
                 break;
         }
     }
@@ -110,22 +132,24 @@ class Register extends Component
     {
         $this->validate();
 
+        $this->protectAgainstSpam();
+
         // Create the business
 
         
 
-        $businessData = [
-            'plan_id' => $this->planSelected,
-            'name' => $this->businessName,
-            'email' => $this->businessEmail,
-            'phone' => $this->businessPhone,
-            'address' => $this->businessAddress,
-            'city' => $this->businessCity,
-            'industry' => $this->businessIndustry,
-            'expire_at' => Carbon::now()->addDays(Plan::find($this->planSelected)->trial_duration),
-        ];
+        // $businessData = [
+        //     'plan_id' => $this->planSelected,
+        //     'name' => $this->businessName,
+        //     'email' => $this->businessEmail,
+        //     'phone' => $this->businessPhone,
+        //     'address' => $this->businessAddress,
+        //     'city' => $this->businessCity,
+        //     'industry' => $this->businessIndustry,
+        //     'expire_at' => Carbon::now()->addDays(Plan::find($this->planSelected)->trial_duration),
+        // ];
 
-        $business = Business::create($businessData);
+        $business = $this->createBusiness();
 
         $user = User::create([
             'name' => $this->firstName,
@@ -143,6 +167,21 @@ class Register extends Component
         // Emit an event or set a flash message
         // session()->flash('message', 'Registration successful!');
         // $this->dispatch('registration-successful');
+    }
+
+    public function createBusiness() {
+        $businessData = [
+            'plan_id' => $this->planSelected,
+            'name' => $this->businessName,
+            'email' => $this->businessEmail,
+            'phone' => $this->businessPhone,
+            'address' => $this->businessAddress,
+            'city' => $this->businessCity,
+            'industry' => $this->businessIndustry,
+            'expire_at' => Carbon::now()->addDays(Plan::find($this->planSelected)->trial_duration),
+        ];
+
+        return Business::create($businessData);
     }
 
     public function render()

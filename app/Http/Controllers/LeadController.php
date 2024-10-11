@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Lead;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class LeadController extends Controller
 {
@@ -14,6 +15,7 @@ class LeadController extends Controller
     {
         $leads = Lead::paginate(10);
         return view('leads.index', compact('leads'));
+        
     }
 
     /**
@@ -33,12 +35,13 @@ class LeadController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:leads,email',
             'phone' => 'nullable|string|max:15',
-            'status' => 'required|in:new,contacted,closed',
+            'status' => 'required|in:new,contacted,converted',
             'message' => 'nullable|string',
         ]);
 
         Lead::create($formData);
 
+        session()->flash('message', 'Lead Created Successfully!');
         return redirect()->route('leads.index');
     }
 
@@ -67,12 +70,13 @@ class LeadController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email',
             'phone' => 'nullable|string|max:15',
-            'status' => 'required|in:new,contacted,closed',
+            'status' => 'required|in:new,contacted,converted',
             'message' => 'nullable|string',
         ]);
 
         $lead->update($formData);
 
+        session()->flash('message', 'Lead Updated Successfully!');
         return redirect()->route('leads.index');
     }
 

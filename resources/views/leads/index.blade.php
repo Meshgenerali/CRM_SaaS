@@ -18,6 +18,16 @@
         </a>
     </div>
 
+    @if (session()->has('message'))
+    <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 3000)" 
+        x-show="show" 
+        class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+               bg-green-500 text-white py-3 px-6 rounded-lg shadow-lg text-sm">
+       {{ session('message') }}
+   </div>
+    
+    @endif
+
     <!-- Leads Table -->
     <div class="bg-gray-800 text-white rounded-lg shadow-lg p-8">
         @forelse($leads as $lead)
