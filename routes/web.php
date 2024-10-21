@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LeadController;
 use App\Http\Middleware\SelectBusiness;
 use App\Livewire\Business\Roles;
+use App\Livewire\Business\Invite;
 use Laravel\Jetstream\Role;
 
 Route::get('/', function () {
@@ -20,7 +21,8 @@ Route::middleware([
     })->name('dashboard')->middleware(SelectBusiness::class);
 
 
-    Route::get('/roles', Roles::class);
+    Route::get('/roles', Roles::class)->name('business.roles');
+    Route::get('/invites', Invite::class)->name('business.invites');
     Route::controller(LeadController::class)->group(function () {
         Route::get('leads', 'index')->name('leads.index');
         Route::get('leads/create', 'create')->name('leads.create');

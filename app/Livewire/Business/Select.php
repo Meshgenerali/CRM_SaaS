@@ -36,6 +36,7 @@ class Select extends Component
                 }
 
                     $request->session()->put('businessId', $business->id);
+                    $request->session()->put('businessName', $business->name);
                     $this->redirect('/dashboard');
 
         } catch (ModelNotFoundException $e) {
