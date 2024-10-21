@@ -3,9 +3,11 @@
 namespace App\Livewire\Business;
 
 use App\Models\Business;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Illuminate\Http\Request;
-
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Log;
 class Select extends Component
 {
     public $showSelection = false;
@@ -24,10 +26,31 @@ class Select extends Component
         $this->showSelection = true;
     }
 
-    public function selectBusiness(Business $business, Request $request) {
-        //dd($business->id);
-        $request->session()->put('businessId', $business->id);
-        $this->redirect('/dashboard');
+    public function selectBusiness($businessId, Request $request) {
+
+        try {
+
+                $business = Business::findOrFail($businessId);
+                if (!Auth::user()->businesses->contains($business->id)) {
+                    abort(403, 'Unauthorized Access To This Business.');
+                }
+
+                    $request->session()->put('businessId', $business->id);
+                    $this->redirect('/dashboard');
+
+        } catch (ModelNotFoundException $e) {
+
+                Log::warning('Invalid business access attempt', [
+                    'user_id' => Auth::id(),
+                    'attempted_business_id' => $businessId,
+                    'ip' => $request->ip()
+                ]);
+
+                return redirect()->back();
+           
+        }
+
+
     }
 
     public function render()
