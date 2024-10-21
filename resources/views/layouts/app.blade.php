@@ -81,7 +81,7 @@
                     @endif
 
                     <!-- Main Content -->
-                    <main class="pl-16 md:pl-20">
+                    <main class="pl-4 md:pl-4">
                         <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                             {{ $slot }}
                         </div>
