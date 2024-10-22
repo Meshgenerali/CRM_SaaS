@@ -69,6 +69,7 @@
                 <div x-show="open" x-collapse class="ml-6 mt-2 space-y-1">
                     <a href="{{route('business.roles')}}" class="block px-4 py-2 rounded-lg {{ request()->routeIs('business.roles') ? 'bg-gray-700 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">Roles</a>
                     <a href="{{route('business.invites')}}" class="block px-4 py-2 rounded-lg {{ request()->routeIs('business.invites') ? 'bg-gray-700 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">Invite Users</a>
+                    <a href="{{route('business.subscriptions')}}" class="block px-4 py-2 rounded-lg {{ request()->routeIs('business.subscriptions') ? 'bg-gray-700 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">Subscriptions</a>
                 </div>
             </div>
 
