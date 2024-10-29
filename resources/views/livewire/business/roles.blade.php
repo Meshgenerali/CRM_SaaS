@@ -2,46 +2,13 @@
 <div class="p-6 bg-gray-900 text-gray-100 min-h-screen">
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold text-white">Role Management</h2>
+        <x-button wire:click="createNewRole">Create Role</x-button>
         <div class="flex space-x-4">
             <input type="text" 
                    wire:model.debounce.300ms="search" 
                    placeholder="Search roles..."
                    class="rounded-md bg-gray-800 border-gray-700 text-gray-100 focus:border-indigo-500 focus:ring-indigo-500 placeholder-gray-400">
         </div>
-    </div>
-
-    {{-- Create/Edit Form --}}
-    <div class="bg-gray-800 rounded-lg shadow-lg p-6 mb-6 border border-gray-700">
-        <h3 class="text-lg font-medium mb-4 text-white">
-            {{ $isEditing ? 'Edit Role' : 'Create New Role' }}
-        </h3>
-        <form wire:submit.prevent="{{ $isEditing ? 'update' : 'create' }}">
-            <div class="grid grid-cols-1 gap-6">
-                <div>
-                    <label class="block text-sm font-medium text-gray-300">Name</label>
-                    <input type="text" 
-                           wire:model="name"
-                           class="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-gray-100 focus:border-indigo-500 focus:ring-indigo-500">
-                    @error('name') 
-                        <span class="text-red-400 text-sm">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="flex justify-end space-x-3">
-                    @if($isEditing)
-                        <button type="button"
-                                wire:click="cancel"
-                                class="bg-gray-700 hover:bg-gray-600 text-gray-200 px-4 py-2 rounded-md transition-colors duration-150">
-                            Cancel
-                        </button>
-                    @endif
-                    <button type="submit"
-                            class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md transition-colors duration-150">
-                        {{ $isEditing ? 'Update' : 'Create' }} Role
-                    </button>
-                </div>
-            </div>
-        </form>
     </div>
 
     {{-- Roles List --}}
@@ -87,8 +54,64 @@
         </div>
     </div>
 
+    <x-dialog-modal wire:model="assignPermissions">
+        <!-- <x-slot name="title">
+            Register
+        </x-slot> -->
+    
+        <x-slot name="content">
+            
+            <h2 class="text-xl font-bold text-center mb-6">Manage Roles & Permissions</h2>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-300">Role Name</label>
+                <input type="text" 
+                       wire:model="name"
+                       class="mt-1 block w-full rounded-md bg-gray-700 border-gray-600 text-gray-100 focus:border-indigo-500 focus:ring-indigo-500">
+                @error('name') 
+                    <span class="text-red-400 text-sm">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <label class="block mt-4 text-sm font-medium text-gray-300">Permissions</label>
+            @foreach ($permissions as $permission)
+            <div class="block mt-4 mb-8">
+                <label for="permission{{$permission->id}}" class="flex items-center">
+                    <x-checkbox 
+                        wire:model="selectedPermissions" 
+                        id="permission{{$permission->id}}"
+                        value="{{ $permission->id }}"    
+                    />
+                    <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ $permission->name }}</span>
+                </label>
+            </div>
+    
+            @endforeach
+                <x-secondary-button wire:click="cancel" wire:loading.attr="disabled">
+                    Cancel
+                </x-secondary-button>
+        
+                <x-danger-button class="ml-2" wire:click="save" wire:loading.attr="disabled">
+                    Save
+                </x-danger-button>
+            
+        </x-slot>
+    
+        {{-- <x-slot name="footer">
+            <x-secondary-button wire:click="cancel" wire:loading.attr="disabled">
+                Cancel
+            </x-secondary-button>
+    
+            <x-danger-button class="ml-2" wire:click="sendInvite" wire:loading.attr="disabled">
+                Send Invite
+            </x-danger-button>
+        </x-slot> --}}
+    
+    </x-dialog>
+
+
     {{-- Delete Confirmation Modal --}}
-    @if($showDeleteModal)
+     @if($showDeleteModal)
         <div class="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
             <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                 <div class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity"></div>
@@ -129,7 +152,7 @@
                 </div>
             </div>
         </div>
-    @endif
+    @endif 
 
 {{-- Updating only the Flash Messages section for brevity --}}
 

@@ -6,6 +6,7 @@ use App\Http\Middleware\SelectBusiness;
 use App\Livewire\Business\Roles;
 use App\Livewire\Business\Invite;
 use App\Livewire\Business\Subscriptions;
+use App\Livewire\Business\Users;
 use Laravel\Jetstream\Role;
 
 Route::get('/', function () {
@@ -23,6 +24,7 @@ Route::middleware([
 
 
     Route::get('/roles', Roles::class)->name('business.roles');
+    Route::get('/users', Users::class)->name('business.users');
     Route::get('/invites', Invite::class)->name('business.invites');
     Route::get('/subscriptions', Subscriptions::class)->name('business.subscriptions');
     Route::controller(LeadController::class)->group(function () {
