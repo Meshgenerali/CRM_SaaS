@@ -3,7 +3,9 @@
 namespace App\Livewire\Business;
 use Livewire\Component;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 use App\Mail\InviteUser;
+use App\Models\Invitation;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class Invite extends Component
@@ -21,7 +23,7 @@ class Invite extends Component
     }
 
     public function sendInvite() {
-        $this->validate([
+        $validated = $this->validate([
             'email' => 'email'
         ]);
 
@@ -29,15 +31,33 @@ class Invite extends Component
 
         $this->inviteModal = false;
 
+        $invitation = Invitation::create([
+            "email" => $validated['email'],
+            "business_id" => session('businessId'),
+            "user_id" => Auth::user()->id
+        ]);
+
         session()->flash('success', 'Invite Sent Successfully to User!');
-        return redirect()->route('dashboard');
+        return redirect()->route('business.invites');
+
+        $invitation = Invitation::create([
+            "email" => "",
+            "business_id" => session('businessId'),
+            "user_id" => Auth::user()->id
+        ]);
 
        // $this->alert('question', 'Invite Send successfully to user!');
       // Alert::success('Success Title', 'Success Message');
     }
 
+    public function resend($email) {
+        $this->email = $email;
+        $this->sendInvite();
+    }
+
     public function render()
     {
-        return view('livewire.business.invite');
+        $invitations = Invitation::paginate(10);
+        return view('livewire.business.invite', compact('invitations'));
     }
 }
