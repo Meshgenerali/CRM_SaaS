@@ -2,7 +2,34 @@
 <div>
 
     <x-button wire:click="invite">Invite User</x-button>
+    <br> <br>
 
+    <table class="w-full text-sm text-left">
+        <thead class="bg-gray-700/50 text-gray-200 uppercase">
+            <tr>
+                <th class="px-6 py-4 font-medium">#</th>
+                <th class="px-6 py-4 font-medium">Email</th>
+                <th class="px-6 py-4 font-medium">Send At</th>
+                <th class="px-6 py-4 font-medium">Actions</th>
+            </tr>
+        </thead>
+        @php
+        $index_serial = ($invitations->currentPage()-1) * $invitations->perPage()+1;
+        @endphp
+        <tbody class="divide-y divide-gray-700">
+            @foreach ($invitations as $invitation)
+            <tr class="hover:bg-gray-700/50 text-gray-300">
+                <td class="px-6 py-4 font-medium text-gray-200">{{$index_serial++}}</td>
+                <td class="px-6 py-4">{{$invitation->email}}</td>
+                <td class="px-6 py-4">{{$invitation->created_at}}</td>
+                <td class="px-6 py-4">
+                    <x-secondary-button wire:click="resend('{{$invitation->email}}')">Resend</x-secondary-button>
+                </td>
+            </tr>  
+            @endforeach         
+        </tbody>
+    </table>
+    
 <x-dialog-modal wire:model="inviteModal">
     <!-- <x-slot name="title">
         Register
