@@ -1,4 +1,5 @@
-<div>
+<div class="overflow-x-auto">
+<div class="bg-gray-800 rounded-lg shadow-lg border border-gray-700">
    <x-table>
     <x-thead>
         <tr>
@@ -39,6 +40,7 @@
         @endforeach
     </x-tbody>
 </x-table>
+</div>
 
 <x-dialog-modal wire:model="assignRoles">
     <!-- <x-slot name="title">
