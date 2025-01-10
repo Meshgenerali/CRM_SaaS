@@ -132,4 +132,5 @@ class Roles extends Component
         $this->showDeleteModal = false;
         $this->reset(['name', 'selectedRole', 'selectedPermissions']);
     }
+
 }
