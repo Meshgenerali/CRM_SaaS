@@ -68,16 +68,28 @@
                 <!-- Sub-links for Settings -->
                 <div x-show="open" x-collapse class="ml-6 mt-2 space-y-1">
                     @can('view users')
-                    <a href="{{route('business.users')}}" class="block px-4 py-2 rounded-lg {{ request()->routeIs('business.users') ? 'bg-gray-700 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">Users</a> 
+                    <a href="{{route('business.users')}}" class="flex gap-2 px-4 py-2 rounded-lg {{ request()->routeIs('business.users') ? 'bg-gray-700 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">
+                        <x-heroicon-s-user-group class="w-6 h-6"/>
+                        <span>Users</span>
+                    </a> 
                     @endcan
                     @can('view roles')
-                    <a href="{{route('business.roles')}}" class="block px-4 py-2 rounded-lg {{ request()->routeIs('business.roles') ? 'bg-gray-700 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">Roles</a>
+                    <a href="{{route('business.roles')}}" class="flex gap-2 px-4 py-2 rounded-lg {{ request()->routeIs('business.roles') ? 'bg-gray-700 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">
+                        <x-uni-key-skeleton class="w-6 h-6"/>
+                        <span>Roles</span>
+                    </a>
                     @endcan
                     @can('invite users')
-                    <a href="{{route('business.invites')}}" class="block px-4 py-2 rounded-lg {{ request()->routeIs('business.invites') ? 'bg-gray-700 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">Invite Users</a>
+                    <a href="{{route('business.invites')}}" class="flex gap-2 px-4 py-2 rounded-lg {{ request()->routeIs('business.invites') ? 'bg-gray-700 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">
+                    <x-antdesign-usergroup-add-o class="w-6 h-6"/>
+                    <span>Invite Users</span>
+                    </a>
                     @endcan
                     @can('manage subscriptions')
-                    <a href="{{route('business.subscriptions')}}" class="block px-4 py-2 rounded-lg {{ request()->routeIs('business.subscriptions') ? 'bg-gray-700 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">Subscriptions</a>
+                    <a href="{{route('business.subscriptions')}}" class="flex gap-2 px-4 py-2 rounded-lg {{ request()->routeIs('business.subscriptions') ? 'bg-gray-700 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white' }}">
+                        <x-bxs-dollar-circle class="w-6 h-6"/>
+                        <span>Subscriptions</span>
+                    </a>
                     @endcan
                 </div>
             </div>
