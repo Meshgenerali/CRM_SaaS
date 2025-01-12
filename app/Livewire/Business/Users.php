@@ -7,6 +7,8 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Role;
 use App\Models\User;
+use App\Notifications\CommonNotification;
+use Illuminate\Support\Facades\Auth;
 
 class Users extends Component
 {
@@ -33,6 +35,10 @@ class Users extends Component
     public function save() {
         $this->user->roles()->sync($this->selectedRoles);
         $this->assignRoles = false;
+
+        $message = "User Roles updated for ".$this->user->name;
+        $link = route('business.users');
+        Auth::user()->notify(new CommonNotification($message, $link));
     }
 
     public function cancel() {

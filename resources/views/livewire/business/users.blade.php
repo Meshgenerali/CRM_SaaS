@@ -1,27 +1,28 @@
-<div>
-   <table class="w-full text-sm text-left">
-    <thead class="bg-gray-700/50 text-gray-200 uppercase">
+<div class="overflow-x-auto">
+<div class="bg-gray-800 rounded-lg shadow-lg border border-gray-700">
+   <x-table>
+    <x-thead>
         <tr>
-            <th class="px-6 py-4 font-medium">Name</th>
-            <th class="px-6 py-4 font-medium">Email</th>            
-            <th class="px-6 py-4 font-medium">Role</th>
-            <th class="px-6 py-4 font-medium text-right">Actions</th>
+            <x-th>Name</x-th>
+            <x-th>Email</x-th>            
+            <x-th>Role</x-th>
+            <x-th class="text-right">Actions</x-th>
         </tr>
-    </thead>
-    <tbody class="divide-y divide-gray-700">
+    </x-thead>
+    <x-tbody>
         @foreach ($users as $user)
-        <tr class="hover:bg-gray-700/50 text-gray-300">
-            <td class="px-6 py-4">{{$user->name}}</td>
-            <td class="px-6 py-4">{{$user->email}}</td>
-            <td class="px-6 py-4">
+        <x-tr>
+            <x-td>{{$user->name}}</x-td>
+            <x-td >{{$user->email}}</x-td>
+            <x-td >
                 @foreach ($user->roles as $role)
                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-900/50 text-blue-200 border border-blue-700">
                     {{$role->name}}
                 </span>
                 @endforeach
                
-            </td>
-            <td class="px-6 py-4 text-right">
+            </x-td>
+            <x-td class="text-right">
                 <div class="flex items-center justify-end space-x-3">
                     <button wire:click="edit('{{$user->id}}')" class="text-blue-400 hover:text-blue-300 p-1 hover:bg-blue-400/10 rounded-lg">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -34,11 +35,12 @@
                         </svg>
                     </button>
                 </div>
-            </td>
-        </tr>
+            </x-td>
+        </x-tr>
         @endforeach
-    </tbody>
-</table>
+    </x-tbody>
+</x-table>
+</div>
 
 <x-dialog-modal wire:model="assignRoles">
     <!-- <x-slot name="title">
@@ -48,7 +50,7 @@
     <x-slot name="content">
         <h2 class="text-xl font-bold text-center mb-6">Assign Roles to User</h2>
         @foreach ($roles as $role)
-        <div class="block mt-4">
+        <div class="block mt-4 mb-6">
             <label for="role{{$role->id}}" class="flex items-center">
                 <x-checkbox 
                     wire:model="selectedRoles" 

@@ -1,53 +1,44 @@
 
 <div class="p-6 bg-gray-900 text-gray-100 min-h-screen">
-    <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold text-white">Role Management</h2>
-        <x-button wire:click="createNewRole">Create Role</x-button>
-        <div class="flex space-x-4">
-            <input type="text" 
+    <div class="flex flex-wrap justify-between items-center mb-6">
+        <h2 class="text-xl sm:text-2xl font-bold text-white mb-2 sm:mb-0">Role Management</h2>
+        <div class="flex flex-wrap gap-2 sm:gap-4">
+            <x-button wire:click="createNewRole">Create Role</x-button>
+            {{-- <input type="text" 
                    wire:model.debounce.300ms="search" 
                    placeholder="Search roles..."
-                   class="rounded-md bg-gray-800 border-gray-700 text-gray-100 focus:border-indigo-500 focus:ring-indigo-500 placeholder-gray-400">
+                   class="rounded-md bg-gray-800 border-gray-700 text-gray-100 focus:border-indigo-500 focus:ring-indigo-500 placeholder-gray-400 w-full sm:w-auto"> --}}
         </div>
     </div>
+    
 
     {{-- Roles List --}}
     <div class="bg-gray-800 rounded-lg shadow-lg overflow-hidden border border-gray-700">
-        <table class="min-w-full divide-y divide-gray-700">
-            <thead class="bg-gray-700">
-                <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Name</th>
-                    
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Actions</th>
-                </tr>
-            </thead>
-            <tbody class="bg-gray-800 divide-y divide-gray-700">
-                @foreach($roles as $role)
-                    <tr class="hover:bg-gray-700 transition-colors duration-150">
-                        <td class="px-6 py-4 whitespace-nowrap text-gray-200">{{ $role->name }}</td>
-                        
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <div class="flex items-center gap-4"> {{-- Changed space-x-3 to gap-4 for better separation --}}
-                                <button wire:click="edit({{ $role->id }})"
-                                        class="inline-flex items-center px-3 py-2 border border-indigo-500 shadow-sm text-sm font-medium rounded-md text-indigo-300 bg-gray-800 hover:bg-indigo-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 focus:ring-offset-gray-800 transition-all duration-150 ease-in-out group">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-indigo-400 group-hover:text-white transition-colors duration-150" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                                    </svg>
-                                    Edit
-                                </button>
-                                <button wire:click="confirmDelete({{ $role->id }})"
-                                        class="inline-flex items-center px-3 py-2 border border-red-500 shadow-sm text-sm font-medium rounded-md text-red-300 bg-gray-800 hover:bg-red-600 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 focus:ring-offset-gray-800 transition-all duration-150 ease-in-out group">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-red-400 group-hover:text-white transition-colors duration-150" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
-                                    </svg>
-                                    Delete
-                                </button>
-                            </div>
-                        </td>
+
+        <div class="overflow-x-auto">
+            <x-table>
+                <thead class="bg-gray-700">
+                    <tr>
+                        <x-th>Name</x-th>
+                        <x-th>Actions</x-th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <x-tbody>
+                    @foreach($roles as $role)
+                        <x-tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-gray-200">{{ $role->name }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <div class="flex items-center gap-4">
+                                    <button wire:click="edit({{ $role->id }})" class="...">Edit</button>
+                                    <button wire:click="confirmDelete({{ $role->id }})" class="...">Delete</button>
+                                </div>
+                            </td>
+                        </x-tr>
+                    @endforeach
+                </x-tbody>
+            </x-table>
+        </div>
+        
 
         <div class="px-6 py-4 bg-gray-800">
             {{ $roles->links() }}

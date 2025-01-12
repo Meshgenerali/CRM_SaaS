@@ -8,6 +8,7 @@ use App\Livewire\Business\Invite;
 use App\Livewire\Business\Subscriptions;
 use App\Livewire\Business\Users;
 use Laravel\Jetstream\Role;
+use App\Livewire\Notifications;
 
 Route::get('/', function () {
     return view('welcome');
@@ -27,6 +28,9 @@ Route::middleware([
     Route::get('/users', Users::class)->name('business.users');
     Route::get('/invites', Invite::class)->name('business.invites');
     Route::get('/subscriptions', Subscriptions::class)->name('business.subscriptions');
+    Route::get('/notifications', Notifications::class)->name('notifications');
+
+
     Route::controller(LeadController::class)->group(function () {
         Route::get('leads', 'index')->name('leads.index');
         Route::get('leads/create', 'create')->name('leads.create');
