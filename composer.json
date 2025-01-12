@@ -6,12 +6,16 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "blade-ui-kit/blade-heroicons": "^2.5",
+        "codeat3/blade-ant-design-icons": "^2.0",
+        "codeat3/blade-unicons": "^1.8",
         "jantinnerezo/livewire-alert": "^3.0",
         "laravel/framework": "^11.9",
         "laravel/jetstream": "^5.1",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.0",
+        "mallardduck/blade-boxicons": "^2.4",
         "realrashid/sweet-alert": "^7.2",
         "spatie/laravel-honeypot": "^4.5"
     },
