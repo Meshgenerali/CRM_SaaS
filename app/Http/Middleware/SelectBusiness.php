@@ -25,6 +25,7 @@ class SelectBusiness
             if($businessCount == 1) {
                 // start session
                 $request->session()->put('businessId', Auth::user()->businesses[0]->id);
+                $request->session()->put('businessName', Auth::user()->businesses[0]->name);
                 return redirect('dashboard');
             } elseif($businessCount == 0) {
                 return redirect('/?register=true');

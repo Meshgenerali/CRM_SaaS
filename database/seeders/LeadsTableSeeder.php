@@ -21,6 +21,7 @@ class LeadsTableSeeder extends Seeder
             $email = Str::slug($businessName, '.') . '@example.com'; // Generate email matching the business name
 
             DB::table('leads')->insert([
+                'business_id' => 2,
                 'name' => $businessName,
                 'email' => $email,
                 'phone' => '123-456-78' . str_pad($i, 2, '0', STR_PAD_LEFT), // Unique phone number

@@ -38,6 +38,14 @@
                         <p class="text-sm text-gray-400">{{ $lead->email }} | {{ $lead->phone ?? 'No phone number' }}</p>
                         <p class="text-sm text-gray-400">Status: <span class="font-semibold">{{ ucfirst($lead->status) }}</span></p>
                         <p class="mt-2 text-gray-300">{{ $lead->message ?? 'No notes' }}</p>
+
+                        <form id="analyzeForm" class="mt-4">
+                            @csrf
+                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+                                Analyze Lead
+                            </button>
+                        </form>
+                        
                     </div>
 
                     <!-- Action Buttons -->

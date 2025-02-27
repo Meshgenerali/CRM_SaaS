@@ -2,6 +2,8 @@
 <div>
     @if ($showButton && auth()->user()->businesses->count()>1)
         <a class="bg-gray-500 pointer-cursor" wire:click="change">{{session('businessName')}}</a>
+    @else
+    <a class="bg-gray-500 pointer-cursor">{{session('businessName')}}</a>
     @endif
     {{session('businessId')}}
 <x-dialog-modal wire:model="showSelection">

@@ -38,9 +38,9 @@ class LeadController extends Controller
             'status' => 'required|in:new,contacted,converted',
             'message' => 'nullable|string',
         ]);
-
-        Lead::create($formData);
-
+        
+        $formData['business_id'] = session('businessId');
+        $lead = Lead::create($formData);
         session()->flash('message', 'Lead Created Successfully!');
         return redirect()->route('leads.index');
     }
@@ -82,10 +82,11 @@ class LeadController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * 
      */
     public function destroy(Lead $lead)
     {
-        $lead->delete();
+        $lead->delete(); 
 
         return redirect()->route('leads.index');
     }

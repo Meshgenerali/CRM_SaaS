@@ -27,6 +27,9 @@ class AppServiceProvider extends ServiceProvider
           $business = Business::find(session('businessId'));
 
             if($business->plan->permissions->flatten()->pluck('name')->unique()->contains($permission)) {
+                if($user->hasRole('admin')) {
+                   return true;
+                }
                 return $user->permissions()->contains($permission);
 
             } else {

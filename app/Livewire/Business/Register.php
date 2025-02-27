@@ -4,6 +4,7 @@ namespace App\Livewire\Business;
 
 use App\Models\Plan;
 use App\Models\Business;
+use App\Models\Role;
 use App\Models\User;
 use Livewire\Component;
 use Livewire\Attributes\On;
@@ -35,7 +36,7 @@ class Register extends Component
 
     // User Information
     public $firstName;
-      public $email;
+    public $email;
     public $password;
     public $passwordConfirmation;
 
@@ -70,7 +71,7 @@ class Register extends Component
         $this->planSelected = $plan->id;
         $this->currentStep = 2;
         $this->showForm = true;
-       // dd($this->planSelected);
+       // dd($this->planSelected);  
        
     }
 
@@ -113,8 +114,10 @@ class Register extends Component
             
                 if(Auth::check()) {
                     $business = $this->createBusiness();
-                    //$business->users()->attach($user->id);
-                    Auth::user()->businesses()->attach($business->id);
+                    $user = Auth::user();
+                    $role = Role::where('name', 'admin')->first();
+                    $user->businesses()->attach($business->id);
+                    $user->roles()->attach($role->id);
                     $this->redirectRoute('dashboard');
                 }
 
@@ -134,20 +137,6 @@ class Register extends Component
 
         $this->protectAgainstSpam();
 
-        // Create the business
-
-        
-
-        // $businessData = [
-        //     'plan_id' => $this->planSelected,
-        //     'name' => $this->businessName,
-        //     'email' => $this->businessEmail,
-        //     'phone' => $this->businessPhone,
-        //     'address' => $this->businessAddress,
-        //     'city' => $this->businessCity,
-        //     'industry' => $this->businessIndustry,
-        //     'expire_at' => Carbon::now()->addDays(Plan::find($this->planSelected)->trial_duration),
-        // ];
 
         $business = $this->createBusiness();
 
@@ -157,8 +146,11 @@ class Register extends Component
             'password' => Hash::make($this->password),
         ]);
 
+        // assign admin role to the first user automatically
+        $role = Role::where('name', 'admin')->first();
         // Create the user and associate with the business
         $business->users()->attach($user->id);
+        $user->roles()->attach($role->id);
 
         $this->redirectRoute('login');
         // $this->reset();

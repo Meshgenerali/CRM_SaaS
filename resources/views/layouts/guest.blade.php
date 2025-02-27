@@ -35,8 +35,13 @@
 
 
         <div class="font-sans text-gray-900 dark:text-gray-100 antialiased">
-            {{ $slot }}
+            {{ $slot }}`
         </div>
+        
+        {{-- <div wire:loading.delay class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        </div> --}}
+
         <footer>
             <div class="container text-center">
                 &copy; footer
