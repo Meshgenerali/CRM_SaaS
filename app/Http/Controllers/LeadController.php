@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Lead;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
+use OpenAI\Laravel\Facades\OpenAI;
+use App\Exports\LeadsExport;
+use App\Imports\LeadsImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class LeadController extends Controller
 {
@@ -89,5 +93,35 @@ class LeadController extends Controller
         $lead->delete(); 
 
         return redirect()->route('leads.index');
+    }
+
+    public function leads_export() {
+        return Excel::download(new LeadsExport, 'leads.xlsx');
+    }
+
+    public function leads_upload() {
+        
+        return view('leads.upload');
+    }
+
+    public function leads_import(Request $request) {
+        $request->validate([
+            'file' => 'required|mimetypes:text/csv|mimes:csv'
+        ]); 
+        Excel::import(new LeadsImport, request()->file('file'));
+        session()->flash('message', 'Leads Imported Successfully');  
+        return redirect()->route('leads.index');      
+    }
+
+    public function analyze() {
+        // use try catch block here ....
+        $result = OpenAI::chat()->create([
+            'model' => 'gpt-4o-mini',
+            'messages' => [
+                ['role' => 'user', 'content' => 'Hello!'],
+            ],
+        ]);
+        
+        dd($result->choices[0]->message->content); 
     }
 }
