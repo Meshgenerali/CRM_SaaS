@@ -3,9 +3,6 @@
         <!-- Header -->
         <div class="flex justify-between items-center mb-8">
             <h1 class="text-3xl font-bold text-gray-200">Leads Kanban Board</h1>
-            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow">
-                + Add Lead
-            </button>
         </div>
     
         <!-- Kanban Board -->
