@@ -14,15 +14,15 @@ class InviteUser extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $inviteLink;
+    public $token;
 
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($token)
     {
         
-        $this->inviteLink = 'https://www.youtube.com/watch?v=sSXjf-CQP_0';
+        $this->token = $token;
     }
 
     /**
@@ -44,6 +44,10 @@ class InviteUser extends Mailable
     {
         return new Content(
             view: 'mail.inviteuser',
+            with: [
+                'token' => $this->token,
+                'inviteLink' => route('invite.accept', $this->token), 
+            ]
         );
     }
 

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LeadController;
+use App\Http\Controllers\InvitesController;
 use App\Http\Middleware\SelectBusiness;
 use App\Livewire\Business\Roles;
 use App\Livewire\Business\Invite;
@@ -42,7 +43,7 @@ Route::middleware([
         Route::get('leads/{lead}/edit', 'edit')->name('leads.edit');
         Route::delete('leads/{lead}/destroy', 'destroy')->name('leads.destroy');
         Route::put('leads/{lead}/update', 'update')->name('leads.update');
-        Route::post('leads/analyze', 'analyze')->name('leads.analyze');
+        Route::post('lead/analyze', 'analyze')->name('lead.analyze');
     });
 
 });
@@ -50,6 +51,13 @@ Route::middleware([
 Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
+
+Route::controller(InvitesController::class)->group(function () {
+    Route::get('accept/invite/{token}', 'accept')->name('invite.accept');
+    Route::post('invite/register', 'register')->name('invite.register');
+});
+
+
 
 
 

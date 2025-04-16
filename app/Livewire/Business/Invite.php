@@ -8,6 +8,7 @@ use App\Mail\InviteUser;
 use App\Models\Invitation;
 use RealRashid\SweetAlert\Facades\Alert;
 
+
 class Invite extends Component
 {
 
@@ -27,15 +28,15 @@ class Invite extends Component
             'email' => 'email'
         ]);
 
-        Mail::to($this->email)->send(new InviteUser());
-
-        $this->inviteModal = false;
-
         $invitation = Invitation::create([
             "email" => $validated['email'],
             "business_id" => session('businessId'),
             "user_id" => Auth::user()->id
         ]);
+
+        Mail::to($this->email)->send(new InviteUser($invitation->token));
+
+        $this->inviteModal = false;
 
         session()->flash('success', 'Invite Sent Successfully to User!');
         return redirect()->route('business.invites');

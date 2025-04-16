@@ -37,24 +37,5 @@ class RolesTableSeeder extends Seeder
                 'updated_at' => '2025-01-10 19:41:04',
             ],
         ]);
-
-        // Insert role_user data
-        DB::table('role_user')->insert([
-            [
-                'id' => 1,
-                'role_id' => 1,
-                'user_id' => 2,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id' => 2,
-                'role_id' => 2,
-                'user_id' => 3,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]
-            
-        ]);
     }
 }

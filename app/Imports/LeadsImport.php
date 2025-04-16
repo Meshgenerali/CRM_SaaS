@@ -5,6 +5,7 @@ namespace App\Imports;
 use App\Models\Lead;
 use Maatwebsite\Excel\Concerns\ToModel;
 
+use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
@@ -29,9 +30,17 @@ class LeadsImport implements ToModel, WithValidation, WithHeadingRow
 
     public function rules(): array
     {
+        $businessId = session('businessId');
+
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:leads,email',
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('leads', 'email')->where(function ($query) use ($businessId) {
+                    return $query->where('business_id', $businessId);
+                }),
+            ],
             'phone' => 'nullable|max:15',
             'status' => 'required|in:new,contacted,converted',
             'message' => 'nullable|string',

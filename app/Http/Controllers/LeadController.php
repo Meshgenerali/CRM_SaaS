@@ -9,6 +9,7 @@ use OpenAI\Laravel\Facades\OpenAI;
 use App\Exports\LeadsExport;
 use App\Imports\LeadsImport;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Http;
 
 class LeadController extends Controller
 {
@@ -114,14 +115,20 @@ class LeadController extends Controller
     }
 
     public function analyze() {
-        // use try catch block here ....
-        $result = OpenAI::chat()->create([
-            'model' => 'gpt-4o-mini',
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . config('services.deepseek.key'),
+            'Content-Type' => 'application/json'
+        ])->post('https://api.deepseek.com/chat/completions', [
+            'model' => 'deepseek-chat',
             'messages' => [
-                ['role' => 'user', 'content' => 'Hello!'],
-            ],
+                ['role' => 'user', 'content' => 'Hello!']
+            ]
         ]);
-        
-        dd($result->choices[0]->message->content); 
+    
+        dump([
+            'status' => $response->status(),
+            'body' => $response->body(),
+            'json' => $response->json(),
+        ]);
     }
 }

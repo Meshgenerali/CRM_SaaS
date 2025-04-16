@@ -49,50 +49,55 @@
                     <!-- Leads Table -->
                     <div class="bg-gray-800 text-white rounded-lg shadow-lg p-8">
                         @forelse($leads as $lead)
-                            <div class="mb-6 p-4 bg-gray-700 rounded-lg shadow-md">
-                                <div class="flex flex-col md:flex-row justify-between items-center">
-                                    <div class="mb-4 md:mb-0">
-                                        <h3 class="text-xl font-bold">{{ $lead->name }}</h3>
-                                        <p class="text-sm text-gray-400">{{ $lead->email }} | {{ $lead->phone ?? 'No phone number' }}</p>
-                                        <p class="text-sm text-gray-400">Status: <span class="font-semibold">{{ ucfirst($lead->status) }}</span></p>
-                                        <p class="mt-2 text-gray-300">{{ $lead->message ?? 'No notes' }}</p>
-                                    </div>
-
-                                    <!-- Action Buttons -->
-                                    <div class="flex flex-wrap gap-2">
-                                        <!-- Assign Lead Button -->
-                                        <form action="#" method="POST">
-                                            @csrf
-                                            <button type="submit" class="text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition duration-300 flex items-center space-x-2">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                    <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6zM16 7a1 1 0 10-2 0v1h-1a1 1 0 100 2h1v1a1 1 0 102 0v-1h1a1 1 0 100-2h-1V7z" />
-                                                </svg>
-                                                <span>Assign</span>
-                                            </button>
-                                        </form>
-
-                                        <!-- Edit Button -->
-                                        <a href="{{ route('leads.edit', $lead->id) }}" class="text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition duration-300 flex items-center space-x-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                                            </svg>
-                                            <span>Edit</span>
-                                        </a>
-
-                                        <!-- Delete Button -->
-                                        <form action="{{ route('leads.destroy', $lead->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this lead?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300 flex items-center space-x-2">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
-                                                </svg>
-                                                <span>Delete</span>
-                                            </button>
-                                        </form>
+                        <div class="mb-6 p-4 bg-gray-800 rounded-lg shadow-md border border-gray-700">
+                            <div class="flex flex-col md:flex-row justify-between gap-4">
+                                <!-- Lead Info -->
+                                <div class="w-full md:w-3/4">
+                                    <h3 class="text-2xl font-bold text-white">{{ $lead->name }}</h3>
+                                    <p class="text-sm text-gray-400">{{ $lead->email }} | {{ $lead->phone ?? 'No phone number' }}</p>
+                                    <p class="text-sm text-gray-400 mt-1">Status: <span class="font-semibold text-indigo-400">{{ ucfirst($lead->status) }}</span></p>
+                                    <p class="mt-2 text-gray-300">{{ $lead->message ?? 'No notes provided' }}</p>
+                
+                                    <!-- AI Insights -->
+                                    <div class="mt-6 bg-gray-700 p-4 rounded-lg border border-gray-600">
+                                        <p class="text-sm font-semibold text-gray-200 mb-1">📌 <span class="text-indigo-300">Lead Summary</span></p>
+                                        <p class="text-sm text-gray-300 italic">This lead is interested in CRM automation tools. High engagement expected based on previous communication.</p>
+                
+                                        <p class="text-sm font-semibold text-gray-200 mt-4">🚦 Estimated Priority:</p>
+                                        <span class="inline-block mt-1 px-3 py-1 text-sm rounded-full bg-green-600 text-white">High</span>
+                
+                                        <p class="text-sm font-semibold text-gray-200 mt-4">✉️ Suggested Follow-up Email:</p>
+                                        <p class="text-sm text-gray-300 mt-1">Hi {{ $lead->name }}, thanks for your interest in our CRM tools. I’d love to help you explore automation features tailored to your business. Let me know when you’re free to chat!</p>
                                     </div>
                                 </div>
+                
+                                <!-- Actions -->
+                                <div class="flex flex-col gap-3 w-full md:w-1/4">
+                                    <!-- AI Analyze -->
+                                    <form action="{{ route('lead.analyze') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="lead_id" value="{{ $lead->id }}">
+                                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium transition">
+                                            🔍 AI Analyze
+                                        </button>
+                                    </form>
+                
+                                    <!-- Edit -->
+                                    <a href="{{ route('leads.edit', $lead->id) }}" class="w-full bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-md text-sm font-medium transition text-center">
+                                        ✏️ Edit
+                                    </a>
+                
+                                    <!-- Delete -->
+                                    <form action="{{ route('leads.destroy', $lead->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this lead?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium transition">
+                                            🗑️ Delete
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
+                        </div>
                         @empty
                             <p class="text-gray-400">No leads available. Add a new lead to get started.</p>
                         @endforelse

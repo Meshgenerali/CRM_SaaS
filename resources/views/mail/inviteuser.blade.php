@@ -9,7 +9,7 @@
                 <p>To get started, please click the button below to accept the invitation:</p>
 
                 <div style="text-align: center; margin: 20px 0;">
-                    <a href="{{ $inviteLink }}" style="padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 4px;">Accept Invitation</a>
+                    <a href="{{ route('invite.accept', $token) }}" style="padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 4px;">Accept Invitation</a>
                 </div>
 
                 <p>If the button above doesn't work, please copy and paste the following link into your browser:</p>

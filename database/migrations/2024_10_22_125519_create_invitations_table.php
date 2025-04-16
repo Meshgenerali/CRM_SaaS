@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('invitations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('business_id');
-            $table->foreignId('user_id');
-            $table->string('email');
+            $table->foreignId('business_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('email')->index();
             $table->string('phone')->nullable();
+            $table->string('token')->unique();
+            $table->boolean('accepted')->default(false);
             $table->timestamps();
         });
     }

@@ -1,4 +1,4 @@
-<section class="bg-gray-900 py-8 rounded-lg">
+<section class="bg-gray-900 py-4 rounded-lg">
     <div class="container mx-auto px-6 text-center">
         <h2 class="text-4xl font-bold text-white mb-8">Choose Your Plan</h2>
         <div class="flex flex-col md:flex-row justify-center gap-8">
