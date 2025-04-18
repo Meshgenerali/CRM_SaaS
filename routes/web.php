@@ -43,6 +43,8 @@ Route::middleware([
         Route::get('leads/{lead}/edit', 'edit')->name('leads.edit');
         Route::delete('leads/{lead}/destroy', 'destroy')->name('leads.destroy');
         Route::put('leads/{lead}/update', 'update')->name('leads.update');
+        Route::get('leads/{lead}/contact', 'contact')->name('leads.contact');
+        Route::post('leads/{lead}/semdemail', 'sendemail')->name('leads.sendemail');
         Route::post('lead/analyze', 'analyze')->name('lead.analyze');
     });
 

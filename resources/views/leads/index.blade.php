@@ -49,52 +49,63 @@
                     <!-- Leads Table -->
                     <div class="bg-gray-800 text-white rounded-lg shadow-lg p-8">
                         @forelse($leads as $lead)
-                        <div class="mb-6 p-4 bg-gray-800 rounded-lg shadow-md border border-gray-700">
-                            <div class="flex flex-col md:flex-row justify-between gap-4">
+                        <div class="p-5 mb-2 bg-gray-800 rounded-lg shadow-md border border-gray-700">
+                            <div class="flex flex-col md:flex-row gap-6">
                                 <!-- Lead Info -->
-                                <div class="w-full md:w-3/4">
-                                    <h3 class="text-2xl font-bold text-white">{{ $lead->name }}</h3>
-                                    <p class="text-sm text-gray-400">{{ $lead->email }} | {{ $lead->phone ?? 'No phone number' }}</p>
-                                    <p class="text-sm text-gray-400 mt-1">Status: <span class="font-semibold text-indigo-400">{{ ucfirst($lead->status) }}</span></p>
-                                    <p class="mt-2 text-gray-300">{{ $lead->message ?? 'No notes provided' }}</p>
-                
-                                    <!-- AI Insights -->
-                                    <div class="mt-6 bg-gray-700 p-4 rounded-lg border border-gray-600">
-                                        <p class="text-sm font-semibold text-gray-200 mb-1">📌 <span class="text-indigo-300">Lead Summary</span></p>
-                                        <p class="text-sm text-gray-300 italic">This lead is interested in CRM automation tools. High engagement expected based on previous communication.</p>
-                
-                                        <p class="text-sm font-semibold text-gray-200 mt-4">🚦 Estimated Priority:</p>
-                                        <span class="inline-block mt-1 px-3 py-1 text-sm rounded-full bg-green-600 text-white">High</span>
-                
-                                        <p class="text-sm font-semibold text-gray-200 mt-4">✉️ Suggested Follow-up Email:</p>
-                                        <p class="text-sm text-gray-300 mt-1">Hi {{ $lead->name }}, thanks for your interest in our CRM tools. I’d love to help you explore automation features tailored to your business. Let me know when you’re free to chat!</p>
+                                <div class="flex-1">
+                                    <h3 class="text-xl font-semibold text-white">{{ $lead->name }}</h3>
+                                    <p class="text-gray-400 text-sm mt-1">{{ $lead->email }} | {{ $lead->phone ?? 'No phone' }}</p>
+                                    <div class="mt-2 flex items-center">
+                                        <span class="text-sm text-gray-400">Status:</span>
+                                        <span class="ml-2 px-2 py-0.5 text-xs rounded-full bg-indigo-900 text-indigo-200">{{ ucfirst($lead->status) }}</span>
+                                    </div>
+                                    <p class="mt-3 text-gray-300 text-sm">{{ $lead->message ?? 'No notes provided' }}</p>
+                                    
+                                    <!-- AI Insights - Simplified -->
+                                    <div class="mt-4 bg-gray-750 p-4 rounded border border-gray-600">
+                                        <div class="flex items-center mb-2">
+                                            <span class="text-indigo-300 font-medium">Lead Summary</span>
+                                        </div>
+                                        <p class="text-sm text-gray-300">This lead is interested in CRM automation tools. High engagement expected.</p>
+                                        
+                                        <div class="mt-3 flex items-center">
+                                            <span class="text-gray-300 text-sm">Priority:</span>
+                                            <span class="ml-2 px-2 py-0.5 text-xs rounded bg-green-700 text-green-100">High</span>
+                                        </div>
+                                        
+                                        <div class="mt-3">
+                                            <p class="text-gray-300 text-sm mb-1">Suggested Response:</p>
+                                            <p class="text-xs text-gray-400">Hi {{ $lead->name }}, thanks for your interest in our CRM tools. I'd love to help you explore automation features tailored to your business. Let me know when you're free to chat!</p>
+                                        </div>
                                     </div>
                                 </div>
-                
+                                
                                 <!-- Actions -->
-                                <div class="flex flex-col gap-3 w-full md:w-1/4">
-                                    <!-- AI Analyze -->
+                                <div class="flex flex-col gap-2 w-full md:w-auto md:min-w-32">
                                     <form action="{{ route('lead.analyze') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="lead_id" value="{{ $lead->id }}">
-                                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium transition">
-                                            🔍 AI Analyze
+                                        <button type="submit" class="w-full bg-gray-700 hover:bg-gray-600 text-gray-200 px-3 py-2 rounded text-sm transition">
+                                            Analyze
                                         </button>
                                     </form>
-                
-                                    <!-- Edit -->
-                                    <a href="{{ route('leads.edit', $lead->id) }}" class="w-full bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-md text-sm font-medium transition text-center">
-                                        ✏️ Edit
+                                    
+                                    <a href="{{ route('leads.edit', $lead->id) }}" class="w-full bg-gray-700 hover:bg-gray-600 text-gray-200 px-3 py-2 rounded text-sm transition text-center">
+                                        Edit
                                     </a>
-                
-                                    <!-- Delete -->
+                                    
                                     <form action="{{ route('leads.destroy', $lead->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this lead?');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium transition">
-                                            🗑️ Delete
+                                        <button type="submit" class="w-full bg-gray-700 hover:bg-red-700 text-gray-200 px-3 py-2 rounded text-sm transition">
+                                            Delete
                                         </button>
                                     </form>
+
+                                    <a href="{{ route('leads.contact', $lead->id) }}" class="w-full bg-gray-700 hover:bg-gray-600 text-gray-200 px-3 py-2 rounded text-sm transition text-center">
+                                        Contact
+                                    </a>
+                                    
                                 </div>
                             </div>
                         </div>

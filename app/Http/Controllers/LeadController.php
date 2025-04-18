@@ -96,6 +96,18 @@ class LeadController extends Controller
         return redirect()->route('leads.index');
     }
 
+    // contact lead
+
+    public function contact(Lead $lead) {
+        return view('leads.contact', compact('lead'));
+    }
+
+    // send email to lead
+
+    public function sendemail(Lead $lead, Request $request) {
+        dd($request->lead->id);
+    }
+
     public function leads_export() {
         return Excel::download(new LeadsExport, 'leads.xlsx');
     }
