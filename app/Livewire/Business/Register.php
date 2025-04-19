@@ -4,6 +4,7 @@ namespace App\Livewire\Business;
 
 use App\Models\Plan;
 use App\Models\Business;
+use App\Models\BusinessPlan;
 use App\Models\Role;
 use App\Models\User;
 use Livewire\Component;
@@ -25,6 +26,9 @@ class Register extends Component
     public $planSelected;
     public $plans;
     public $currentStep = 1;
+    
+    public $business_plan;
+    public $businessInfo;
 
     // Business Information
     public $businessName;
@@ -173,7 +177,28 @@ class Register extends Component
             'expire_at' => Carbon::now()->addDays(Plan::find($this->planSelected)->trial_duration),
         ];
 
-        return Business::create($businessData);
+        $business = Business::create($businessData);
+        $this->businessSubscription($business);
+        return $business;
+    }
+
+    public function businessSubscription(Business $business) {
+
+        $plan = Plan::findOrFail($this->planSelected);
+
+        $startDate = now();
+        $trialEndsAt = $startDate->copy()->addDays($plan->trial_duration);
+        $endsAt = $startDate->copy()->addDays($plan->duration); // Plan duration in days (optional for trial-only users)
+    
+        return BusinessPlan::create([
+            'business_id'   => $business->id,
+            'plan_id'       => $plan->id,
+            'starts_at'     => $startDate,
+            'ends_at'       => $endsAt,
+            'trial_ends_at' => $trialEndsAt,
+            'is_trial'      => true,
+            'is_active'     => true,
+        ]);
     }
 
     public function render()

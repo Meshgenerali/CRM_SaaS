@@ -29,17 +29,6 @@ class Subscriptions extends Component
         $this->business->update($businessData);
     }
 
-    // public function selectPlan(Plan $plan) {
-        
-    //     $this->selectedPlan = $plan;
-    //     $businessData = [
-    //         'plan_id' => $this->plan,
-    //         'expire_at' => Carbon::now()->addDays(Plan::find($this->selectedPlan)->trial_duration),
-    //     ];
-
-    //     $this->business->update($businessData);
-    // }
-
     public function render()
     {
         return view('livewire.business.subscriptions');

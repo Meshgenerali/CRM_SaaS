@@ -15,4 +15,10 @@ class Plan extends Model
     {
         return $this->belongsToMany(Permission::class);
     }
+
+    public function businesses() {
+        return $this->belongsToMany(Business::class, 'business_plan')
+                    ->withPivot('starts_at', 'ends_at', 'trial_ends_at', 'is_trial', 'is_active')
+                    ->withTimestamps();
+    }
 }
