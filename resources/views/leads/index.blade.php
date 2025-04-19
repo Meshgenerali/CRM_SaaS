@@ -49,6 +49,9 @@
                     <!-- Leads Table -->
                     <div class="bg-gray-800 text-white rounded-lg shadow-lg p-8">
                         @forelse($leads as $lead)
+                        @php
+                            $analysis = json_decode($lead->ai_analysis, true);
+                        @endphp
                         <div class="p-5 mb-2 bg-gray-800 rounded-lg shadow-md border border-gray-700">
                             <div class="flex flex-col md:flex-row gap-6">
                                 <!-- Lead Info -->
@@ -61,16 +64,19 @@
                                     </div>
                                     <p class="mt-3 text-gray-300 text-sm">{{ $lead->message ?? 'No notes provided' }}</p>
                                     
-                                    <!-- AI Insights - Simplified -->
+                                    <!-- AI Insights -->
+                                    @if($analysis)
                                     <div class="mt-4 bg-gray-750 p-4 rounded border border-gray-600">
                                         <div class="flex items-center mb-2">
                                             <span class="text-indigo-300 font-medium">Lead Summary</span>
                                         </div>
-                                        <p class="text-sm text-gray-300">This lead is interested in CRM automation tools. High engagement expected.</p>
+                                        <p class="text-sm text-gray-300">{{ $analysis['summary'] ?? 'N/A' }}</p>
                                         
                                         <div class="mt-3 flex items-center">
                                             <span class="text-gray-300 text-sm">Priority:</span>
-                                            <span class="ml-2 px-2 py-0.5 text-xs rounded bg-green-700 text-green-100">High</span>
+                                            <span class="ml-2 px-2 py-0.5 text-xs rounded {{ ($analysis['priority'] ?? '') === 'High' ? 'bg-red-600 text-white' : (($analysis['priority'] ?? '') === 'Medium' ? 'bg-yellow-500 text-black' : 'bg-green-500 text-black') }}">
+                                                {{ $analysis['priority'] ?? 'Unknown' }}
+                                            </span>
                                         </div>
                                         
                                         <div class="mt-3">
@@ -78,6 +84,9 @@
                                             <p class="text-xs text-gray-400">Hi {{ $lead->name }}, thanks for your interest in our CRM tools. I'd love to help you explore automation features tailored to your business. Let me know when you're free to chat!</p>
                                         </div>
                                     </div>
+                                    @else
+                                        <p class="mt-4 text-gray-400 italic">No AI analysis yet. Click "Analyze" to generate one.</p>
+                                    @endif
                                 </div>
                                 
                                 <!-- Actions -->

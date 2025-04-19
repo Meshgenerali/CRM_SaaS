@@ -10,6 +10,7 @@ use App\Exports\LeadsExport;
 use App\Imports\LeadsImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class LeadController extends Controller
 {
@@ -126,21 +127,84 @@ class LeadController extends Controller
         return redirect()->route('leads.index');      
     }
 
-    public function analyze() {
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . config('services.deepseek.key'),
-            'Content-Type' => 'application/json'
-        ])->post('https://api.deepseek.com/chat/completions', [
-            'model' => 'deepseek-chat',
-            'messages' => [
-                ['role' => 'user', 'content' => 'Hello!']
-            ]
-        ]);
+    public function analyze(Request $request) {
+        $leadId = $request->lead_id;
+        $lead = Lead::findOrFail($leadId);
+        $prompt = "Given this lead:\n\n" .
+                "Name: {$lead->name}\n" .
+                "Message: {$lead->message}\n\n" .
+                "Generate a JSON response containing:\n" .
+                "- summary: a one-line summary of the lead intent\n" .
+                "- priority: High, Medium or Low based on urgency and intent\n" .
+                "- follow_up: a professional follow-up email";
+        
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'x-goog-api-key' => config('services.gemini.api_key'),
+            ])->post('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent', [
+                'contents' => [
+                    [
+                        'parts' => [
+                            ['text' => $prompt]
+                        ]
+                    ]
+                ]
+            ]);
+
+        if (!$response->ok()) {
+            return response()->json([
+                'error' => 'Gemini API call failed',
+                'status' => $response->status(),
+                'body' => $response->body()
+            ], 500);
+        }
     
-        dump([
-            'status' => $response->status(),
-            'body' => $response->body(),
-            'json' => $response->json(),
-        ]);
+                // Safely extract AI text response
+                $aiContent = $response->json('candidates.0.content.parts.0.text') ?? $response->json('candidates.0.content.parts.0') ?? null;
+
+                if (!$aiContent) {
+                    return response()->json([
+                        'error' => 'No AI response',
+                        'response' => $response->json()
+                    ], 500);
+                }
+
+                // Log raw response
+                \Log::info('Raw Gemini AI Response:', ['content' => $aiContent]);
+
+                // Extract JSON block from the code block
+                if (preg_match('/```json(.*?)```/s', $aiContent, $matches)) {
+                    $cleanJson = trim($matches[1]);
+
+                    try {
+                        $parsed = json_decode($cleanJson, true);
+
+                        if (is_array($parsed)) {
+                            // Save to database
+                            $lead->ai_analysis = json_encode($parsed, JSON_PRETTY_PRINT);
+                            $lead->save();
+
+                            return redirect()->back()->with('message', 'AI analysis generated and saved successfully.');
+                        }
+
+                        return response()->json([
+                            'error' => 'JSON parsing failed',
+                            'raw' => $cleanJson
+                        ], 500);
+                    } catch (\Throwable $e) {
+                        return response()->json([
+                            'error' => 'Failed to decode JSON',
+                            'exception' => $e->getMessage(),
+                            'raw' => $cleanJson
+                        ], 500);
+                    }
+                } else {
+                    return response()->json([
+                        'error' => 'No JSON block found in AI content',
+                        'raw' => $aiContent
+                    ], 500);
+                }
+
+
     }
 }

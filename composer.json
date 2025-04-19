@@ -9,6 +9,7 @@
         "blade-ui-kit/blade-heroicons": "^2.5",
         "codeat3/blade-ant-design-icons": "^2.0",
         "codeat3/blade-unicons": "^1.8",
+        "guzzlehttp/guzzle": "^7.9",
         "jantinnerezo/livewire-alert": "^3.0",
         "laravel/framework": "^11.9",
         "laravel/jetstream": "^5.1",

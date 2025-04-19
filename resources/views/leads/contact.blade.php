@@ -23,6 +23,23 @@
                                         </ul>
                                     </div>
                                 @endif
+
+                                @php
+                                    $analysis = json_decode($lead->ai_analysis, true);
+                                    $followUp = '';
+
+                                    if (isset($analysis['follow_up'])) {
+                                        // If follow_up is a nested array, extract "body" key if present
+                                        if (is_array($analysis['follow_up']) && isset($analysis['follow_up']['body'])) {
+                                            $followUp = $analysis['follow_up']['body'];
+                                        } elseif (is_string($analysis['follow_up'])) {
+                                            $followUp = $analysis['follow_up'];
+                                        }
+                                    }
+
+                                    // Replace \n with real line breaks for display
+                                    $followUpFormatted = str_replace('\n', "\n", $followUp);
+                                @endphp
             
                                 <form action="{{ route('leads.sendemail', $lead->id) }}" method="POST" class="space-y-6">
                                     @csrf
@@ -56,7 +73,7 @@
                                         <label for="message" class="block text-lg mb-1">Email Body</label>
                                         <textarea id="message" name="message" rows="6"
                                             class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                            placeholder="Write your message to the lead here...">{{ old('message') }}</textarea>
+                                            placeholder="Write your message to the lead here...">{{ old('message', $followUpFormatted) }}</textarea>
                                     </div>
             
                                     <!-- Send Button -->
