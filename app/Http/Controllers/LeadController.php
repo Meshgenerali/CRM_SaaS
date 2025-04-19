@@ -11,6 +11,8 @@ use App\Imports\LeadsImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use App\Mail\LeadFollowUpEmail;
+use Illuminate\Support\Facades\Mail;
 
 class LeadController extends Controller
 {
@@ -106,7 +108,18 @@ class LeadController extends Controller
     // send email to lead
 
     public function sendemail(Lead $lead, Request $request) {
-        dd($request->lead->id);
+        $validated = $request->validate([
+            'message' => 'required|string|min:10',
+        ]);
+
+        $subject = "Follow-Up: " . $lead->name;
+        $body = $validated['message'];
+    
+        // Send email to the lead
+        Mail::to($lead->email)->send(new LeadFollowUpEmail($subject, $body));
+    
+        return redirect()->route('leads.index')->with('message', 'Email sent successfully to the lead!');
+    
     }
 
     public function leads_export() {
