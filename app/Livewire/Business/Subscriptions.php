@@ -5,6 +5,7 @@ namespace App\Livewire\Business;
 use App\Models\Business;
 use Livewire\Component;
 use App\Models\Plan;
+use App\Models\BusinessPlan;
 
 use Carbon\Carbon;
 class Subscriptions extends Component
@@ -27,6 +28,39 @@ class Subscriptions extends Component
         ];
 
         $this->business->update($businessData);
+
+        $this->businessSubscription($this->business);
+    }
+
+
+    public function businessSubscription() {
+        $plan = Plan::findOrFail($this->selectedPlan);
+
+        $startDate = now();
+        $trialEndsAt = $startDate->copy()->addDays($plan->trial_duration);
+        $endsAt = $startDate->copy()->addDays($plan->duration);
+    
+        // Update existing active subscription or create a new one
+        $subscription = BusinessPlan::where('business_id', $this->business->id)
+            ->where('is_active', true)
+            ->latest()
+            ->first();
+    
+        if ($subscription) {
+            // Deactivate the old plan
+            $subscription->update(['is_active' => false]);
+        }
+    
+        // Create a new plan entry
+        return BusinessPlan::create([
+            'business_id'   => $this->business->id,
+            'plan_id'       => $plan->id,
+            'starts_at'     => $startDate,
+            'ends_at'       => $endsAt,
+            'trial_ends_at' => $trialEndsAt,
+            'is_trial'      => true,
+            'is_active'     => true,
+        ]);
     }
 
     public function render()
