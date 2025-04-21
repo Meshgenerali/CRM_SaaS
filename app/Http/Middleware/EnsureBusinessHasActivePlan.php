@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use App\Models\BusinessPlan;
 
 class EnsureBusinessHasActivePlan
 {
@@ -19,38 +20,39 @@ class EnsureBusinessHasActivePlan
     {
         $user = Auth::user();
 
+        // Ensure user is authenticated and has a business context
         if (!$user || !session()->has('businessId')) {
-            return redirect()->route('dashboard')->with('error', 'Business context is missing.');
+            return redirect()->route('dashboard')->with('error', 'No business selected or you are not logged in.');
         }
 
+        // Get the current business from session
         $business = $user->businesses()->find(session('businessId'));
 
         if (!$business) {
-            return redirect()->route('dashboard')->with('error', 'Business not found.');
+            return redirect()->route('dashboard')->with('error', 'The selected business does not exist.');
         }
 
-        // Get the most recent subscription (latest record in pivot)
+        // Fetch latest business plan (from pivot table)
         $subscription = $business->plans()
-            ->latest('business_plan.created_at')
+            ->latest('business_plans.created_at')
             ->first();
 
-        if (!$subscription) {
-            return redirect()->route('subscriptions.index')
-                ->with('error', 'No plan is assigned to this business.');
+        if (!$subscription || !$subscription->pivot) {
+            return redirect()->route('business.subscriptions')
+                ->with('error', 'No active subscription found. Please select a plan.');
         }
 
         $pivot = $subscription->pivot;
+        $now = now();
 
-        $now = Carbon::now();
+        // Check subscription validity
+        $isTrialActive = $pivot->is_trial && $pivot->trial_ends_at && $now->lt(Carbon::parse($pivot->trial_ends_at));
+        $isPaidActive = !$pivot->is_trial && $pivot->ends_at && $now->lt(Carbon::parse($pivot->ends_at));
 
-        $isTrialValid = $pivot->is_trial && $pivot->trial_ends_at && $now->lt(Carbon::parse($pivot->trial_ends_at));
-        $isPaidValid = !$pivot->is_trial && $pivot->ends_at && $now->lt(Carbon::parse($pivot->ends_at));
-
-        if (!$isTrialValid && !$isPaidValid) {
+        if (!$isTrialActive && !$isPaidActive) {
             return redirect()->route('business.subscriptions')
-                ->with('error', 'Your subscription has expired. Please renew to continue using the system.');
+                ->with('error', 'Your subscription has expired. Please renew to continue.');
         }
-
 
         return $next($request);
     }

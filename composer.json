@@ -20,6 +20,7 @@
         "mallardduck/blade-boxicons": "^2.4",
         "openai-php/laravel": "^0.10.1",
         "realrashid/sweet-alert": "^7.2",
+        "safaricom/mpesa": "^1.0",
         "spatie/laravel-honeypot": "^4.5"
     },
     "require-dev": {

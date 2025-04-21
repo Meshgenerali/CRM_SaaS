@@ -8,7 +8,7 @@
         <div class="bg-gray-800 text-white p-8 rounded-lg shadow-lg transform hover:scale-105 transition duration-300">
                 <h3 class="text-2xl font-bold mb-4">{{$plan->name}}</h3>
                 <p class="text-gray-400 mb-6">{{$plan->description}}</p>
-                <p class="text-4xl font-bold mb-4">$ {{$plan->price}}<span class="text-lg text-gray-400">/month</span></p>
+                <p class="text-4xl font-bold mb-4">KES {{$plan->price}}<span class="text-lg text-gray-400">/month</span></p>
                 <!-- <ul class="text-gray-400 mb-6">
                     <li class="mb-2">✔ 5 Projects</li>
                     <li class="mb-2">✔ 10 Users</li>

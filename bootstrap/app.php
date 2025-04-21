@@ -17,6 +17,12 @@ return Application::configure(basePath: dirname(__DIR__))
             'check.business' => \App\Http\Middleware\EnsureBusinessHasActivePlan::class,
         ]);
     })
+    // ->withProviders([
+    //     MpesaServiceProvider::class,
+    // ])
+    // ->withAliases([
+    //     'Mpesa' => Mpesa::class,
+    // ])
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();

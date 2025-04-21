@@ -30,6 +30,7 @@ Route::middleware([
     Route::get('/invites', Invite::class)->name('business.invites');
     Route::get('/subscriptions', Subscriptions::class)->name('business.subscriptions');
     Route::get('/notifications', Notifications::class)->name('notifications');
+    Route::post('/mpesa/callback', [PaymentController::class, 'mpesaCallback'])->name('mpesa.callback');
 
 
     Route::controller(LeadController::class)->group(function () {
@@ -45,7 +46,7 @@ Route::middleware([
         Route::put('leads/{lead}/update', 'update')->name('leads.update');
         Route::get('leads/{lead}/contact', 'contact')->name('leads.contact');
         Route::post('leads/{lead}/sendemail', 'sendemail')->name('leads.sendemail');
-        Route::post('lead/analyze', 'analyze')->name('lead.analyze');
+        Route::post('lead/analyze', 'analyze')->name('lead.analyze')->middleware('check.business');
     });
 
 });

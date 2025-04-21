@@ -17,18 +17,18 @@ class PlansTableSeeder extends Seeder
             [
                 'name' => 'Basic Plan',
                 'description' => 'A starter plan suitable for small teams and individuals.',
-                'price' => 29.99,
-                'currency' => 'USD',
-                'duration' => 30, 
-                'trial_duration' => 7, 
+                'price' => 1500,
+                'currency' => 'KES',
+                'duration' => 30, // days
+                'trial_duration' => 7, // days
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'name' => 'Standard Plan',
                 'description' => 'Best for growing businesses, with additional features and flexibility.',
-                'price' => 59.99,
-                'currency' => 'USD',
+                'price' => 2000,
+                'currency' => 'KES',
                 'duration' => 30,
                 'trial_duration' => 7,
                 'created_at' => now(),
@@ -37,8 +37,8 @@ class PlansTableSeeder extends Seeder
             [
                 'name' => 'Premium Plan',
                 'description' => 'Full-featured plan with unlimited access and support for large teams.',
-                'price' => 99.99,
-                'currency' => 'USD',
+                'price' => 2500,
+                'currency' => 'KES',
                 'duration' => 30,
                 'trial_duration' => 14,
                 'created_at' => now(),

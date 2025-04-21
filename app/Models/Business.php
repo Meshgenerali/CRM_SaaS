@@ -36,9 +36,10 @@ class Business extends Model
             return $this->belongsTo(Plan::class);
         }
 
-        public function plans(){
-            return $this->belongsToMany(Plan::class, 'business_plan')
-                        ->withPivot('starts_at', 'ends_at', 'trial_ends_at', 'is_trial', 'is_active')
+        public function plans()
+        {
+            return $this->belongsToMany(Plan::class, 'business_plans')
+                        ->withPivot(['starts_at', 'ends_at', 'trial_ends_at', 'is_trial', 'is_active'])
                         ->withTimestamps();
         }
 

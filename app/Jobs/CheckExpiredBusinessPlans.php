@@ -40,6 +40,6 @@ class CheckExpiredBusinessPlans implements ShouldQueue
                 $plan->update(['is_active' => false]);
             });
 
-        logger('✅ Business plan check completed.');
+        logger('Business plan check completed.');
     }
 }
