@@ -39,7 +39,7 @@ class EnsureBusinessHasActivePlan
 
         if (!$subscription || !$subscription->pivot) {
             return redirect()->route('business.subscriptions')
-                ->with('error', 'No active subscription found. Please select a plan.');
+                ->with('error', 'Trial Period Expired. Please Click Subscribe To Checkout');
         }
 
         $pivot = $subscription->pivot;

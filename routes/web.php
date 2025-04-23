@@ -25,10 +25,10 @@ Route::middleware([
     })->name('dashboard')->middleware(SelectBusiness::class);
 
 
-    Route::get('/roles', Roles::class)->name('business.roles');
-    Route::get('/users', Users::class)->name('business.users');
-    Route::get('/invites', Invite::class)->name('business.invites');
-    Route::get('/subscriptions', Subscriptions::class)->name('business.subscriptions');
+    Route::get('/roles', Roles::class)->name('business.roles')->can('view roles');
+    Route::get('/users', Users::class)->name('business.users')->can('view users');
+    Route::get('/invites', Invite::class)->name('business.invites')->can('invite users');
+    Route::get('/subscriptions', Subscriptions::class)->name('business.subscriptions')->can('manage subscriptions');
     Route::get('/notifications', Notifications::class)->name('notifications');
     Route::post('/mpesa/callback', [PaymentController::class, 'mpesaCallback'])->name('mpesa.callback');
 
@@ -37,7 +37,7 @@ Route::middleware([
         Route::get('leads', 'index')->name('leads.index');
         Route::get('leads/create', 'create')->name('leads.create');
         Route::get('leads/imports/uploads', 'leads_upload')->name('leads.upload');
-        Route::post('leads/import', 'leads_import')->name('leads.import');
+        Route::post('leads/import', 'leads_import')->name('leads.import')->middleware('check.business');
         Route::get('leads/export', 'leads_export')->name('leads.export');
         Route::post('leads/store', 'store')->name('leads.store');
         Route::post('leads/{lead}/show', 'show')->name('leads.show');
@@ -45,7 +45,7 @@ Route::middleware([
         Route::delete('leads/{lead}/destroy', 'destroy')->name('leads.destroy');
         Route::put('leads/{lead}/update', 'update')->name('leads.update');
         Route::get('leads/{lead}/contact', 'contact')->name('leads.contact');
-        Route::post('leads/{lead}/sendemail', 'sendemail')->name('leads.sendemail');
+        Route::post('leads/{lead}/sendemail', 'sendemail')->name('leads.sendemail')->middleware('check.business');
         Route::post('lead/analyze', 'analyze')->name('lead.analyze')->middleware('check.business');
     });
 

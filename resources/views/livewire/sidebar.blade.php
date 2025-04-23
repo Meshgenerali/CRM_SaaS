@@ -28,7 +28,7 @@
 
             <a href="{{route('leads.index')}}" @click="open = !open" class="flex items-center gap-3 px-4 py-2.5 text-gray-300 hover:bg-gray-700 rounded-lg transition-colors group cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
                     <span class="text-sm font-medium group-hover:text-white">Leads</span>
                 </svg>
             </a>
@@ -39,7 +39,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
-                    <span class="text-sm font-medium group-hover:text-white">Users</span>
+                    <span class="text-sm font-medium group-hover:text-white">Businesses</span>
                     <svg class="ml-auto h-5 w-5 transition-transform transform" :class="open ? 'rotate-180' : 'rotate-0'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                     </svg>
@@ -47,8 +47,8 @@
                 
                 <!-- Sub-links for Users -->
                 <div x-show="open" x-collapse class="ml-6 mt-2 space-y-1">
-                    <a href="#" class="block px-4 py-2 text-gray-300 hover:bg-gray-700 rounded-lg">Sublink 1</a>
-                    <a href="#" class="block px-4 py-2 text-gray-300 hover:bg-gray-700 rounded-lg">Sublink 2</a>
+                    <a href="#" class="block px-4 py-2 text-gray-300 hover:bg-gray-700 rounded-lg">Add Business</a>
+                    <a href="#" class="block px-4 py-2 text-gray-300 hover:bg-gray-700 rounded-lg">Available Business</a>
                 </div>
             </div>
 

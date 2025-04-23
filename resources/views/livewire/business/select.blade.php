@@ -1,11 +1,20 @@
 
 <div>
     @if ($showButton && auth()->user()->businesses->count()>1)
-        <a class="bg-gray-500 pointer-cursor" wire:click="change">{{session('businessName')}}</a>
+
+        <button 
+            wire:click="change"
+            class="flex items-center gap-2 px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-md transition-all duration-200 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <span class="text-white truncate max-w-[150px]">{{ session('businessName') }}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+        </button>
     @else
-    <a class="bg-gray-500 pointer-cursor">{{session('businessName')}}</a>
+    <div class="flex items-center px-3 py-2 bg-gray-800 rounded-md border border-gray-700">
+    <span class="text-white truncate max-w-[150px]">{{ session('businessName') }}</span>
+    </div>
     @endif
-    {{session('businessId')}}
 <x-dialog-modal wire:model="showSelection">
     <!-- <x-slot name="title">
         Register
