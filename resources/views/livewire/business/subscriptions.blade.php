@@ -1,3 +1,7 @@
+@php
+    $now = \Carbon\Carbon::now();
+    $expireDate = \Carbon\Carbon::parse($business->expire_at);
+@endphp
 <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl shadow-2xl p-8 relative overflow-hidden">
     <!-- Decorative Elements -->
     <div class="absolute top-0 right-0 w-64 h-64 bg-purple-600/10 rounded-full blur-3xl"></div>
@@ -29,11 +33,17 @@
                         <div class="h-2 flex-1 bg-gray-700 rounded-full overflow-hidden">
                             <div class="h-full bg-gradient-to-r from-green-500 to-emerald-500" style="width: 70%"></div>
                         </div>
-                        <p class="text-xs text-gray-400">{{ \Carbon\Carbon::parse($business->expire_at)->diffForHumans(now(), [
-                            'parts' => 2,
-                            'short' => true,
-                            'syntax' => \Carbon\CarbonInterface::DIFF_ABSOLUTE
-                         ]) }} left</p>
+                        <p class="text-xs text-gray-400">
+                            @if ($expireDate->isPast())
+                                <span class="text-red-500 font-semibold">Expired</span>
+                            @else
+                                {{ $expireDate->diffForHumans($now, [
+                                    'parts' => 2,
+                                    'short' => true,
+                                    'syntax' => \Carbon\CarbonInterface::DIFF_ABSOLUTE
+                                ]) }} left
+                            @endif
+                        </p>
                     </div>
                 </div>
             </div>

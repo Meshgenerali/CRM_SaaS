@@ -42,6 +42,15 @@
        </div>
         @endforeach
         @endif
+        <!-- Add New Business Card -->
+        <a href="/?register=true" 
+                class="cursor-pointer p-4 bg-gray-700 rounded-lg shadow-lg hover:bg-green-600 transition-all duration-200 transform hover:scale-105 flex flex-col items-center justify-center text-center border-2 border-dashed border-gray-600">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+            <h3 class="text-lg font-bold text-white">Add New Business</h3>
+            <p class="text-gray-400 text-sm">Create a new business profile</p>
+        </a>
         </div>
     </x-slot>
 

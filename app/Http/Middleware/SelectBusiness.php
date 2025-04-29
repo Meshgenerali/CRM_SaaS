@@ -17,7 +17,6 @@ class SelectBusiness
     public function handle(Request $request, Closure $next): Response
     {
         if($request->session()->get('businessId')) {
-            //dd('sss started');
 
         } else {
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Safaricom\Mpesa\Mpesa;
 use App\Models\SubscriptionPayment;
+use App\Models\BusinessPlan;
 
 class PaymentController extends Controller
 {
@@ -13,6 +14,8 @@ class PaymentController extends Controller
         {
             $mpesa = new \Safaricom\Mpesa\Mpesa();
             $callbackData = $mpesa->getDataFromCallback();
+            $businessId = session('businessId');
+            $subscription = BusinessPlan::findOrFail($businessId);
 
             \Log::info('M-Pesa Callback', $callbackData);
 
@@ -21,6 +24,8 @@ class PaymentController extends Controller
             try {
                 // Store the payment data in the mpesa_payments table
                 SubcriptionPayment::create([
+                    'business_id' => $businessId,
+                    'plan_id' => $subscription->plan_id,
                     'transaction_type' => $callbackData['TransactionType'] ?? null,
                     'trans_id' => $callbackData['TransID'],
                     'trans_time' => $callbackData['TransTime'],
@@ -52,6 +57,7 @@ class PaymentController extends Controller
             return response()->json(['message' => 'Transaction failed'], 400);
         }
 
+        $subscription->update(['is_atvive'=>true]);
 
 
             return response()->json(['message' => 'Callback received']);

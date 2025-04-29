@@ -19,12 +19,12 @@
           
           <div class="mb-6">
             <p class="text-lg text-gray-400 mb-2">Phone</p>
-            <p class="text-lg">+1 (123) 456-7890</p>
+            <p class="text-lg">+2547 456-7890</p>
           </div>
           
           <div class="mb-6">
             <p class="text-lg text-gray-400 mb-2">Office Address</p>
-            <p class="text-lg">123 SaaS Street, Suite 456<br>Your City, Your Country</p>
+            <p class="text-lg">123 SaaS Street, Suite 456<br>Nairobi, Kenya</p>
           </div>
         </div>
         

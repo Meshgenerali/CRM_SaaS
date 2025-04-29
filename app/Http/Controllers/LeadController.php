@@ -21,7 +21,7 @@ class LeadController extends Controller
      */
     public function index()
     {
-        $leads = Lead::paginate(10);
+        $leads = Lead::orderBy('created_at', 'desc')->paginate(10);
         return view('leads.index', compact('leads'));
         
     }
@@ -117,6 +117,9 @@ class LeadController extends Controller
     
         // Send email to the lead
         Mail::to($lead->email)->send(new LeadFollowUpEmail($subject, $body));
+
+        // update the lead status to contacted
+        $lead->update(['status' => 'contacted']);
     
         return redirect()->route('leads.index')->with('message', 'Email sent successfully to the lead!');
     
