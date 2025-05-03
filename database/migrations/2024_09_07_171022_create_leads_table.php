@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('email');
             $table->unique(['email', 'business_id']); // Composite unique index
             $table->string('phone')->nullable(); 
-            $table->enum('status', ['new', 'contacted', 'converted'])->default('new'); 
+            $table->string('status')->default('new'); 
             $table->text('message')->nullable();
             $table->text('ai_analysis')->nullable(); 
             $table->timestamps(); 

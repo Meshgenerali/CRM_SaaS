@@ -29,9 +29,5 @@
                 </div>
             </div>
         </div>
-        <br>
-        <br>
-
-        @livewire('kanban.board')
     </div>    
 </x-app-layout>
